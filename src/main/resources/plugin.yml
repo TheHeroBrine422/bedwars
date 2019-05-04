@@ -6,5 +6,5 @@ authors: [Ami, Atlasted, Hero]
 description: A clone of Hypixel's "Bed Wars" game-mode.
 commands:
   helloworld:
-    description: Only tell's AmiCole "hello world!"
+    description: Puts "hello world!" in the chat
     usage: /helloworld

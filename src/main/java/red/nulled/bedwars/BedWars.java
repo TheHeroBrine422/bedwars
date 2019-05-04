@@ -23,7 +23,7 @@ public final class BedWars extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("helloworld")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
             //Player target = Bukkit.getServer().getPlayer(UUID.fromString("d03ea078-de10-4538-b696-b7fbbd2498e7"));
-            sender.sendMessage("Hello world");
+            sender.sendMessage("hello world!");
             return true;
         }
         return false;
