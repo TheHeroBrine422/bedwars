@@ -23,12 +23,12 @@
 hs_err_pid*
 
 # IDE files
-.ieda/compiler.xml
-.ieda/encodings.xml
-.ieda/misc.xml
-.ieda/modules.xml
-.ieda/vcs.xml
-.ieda/workspace.xml
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
 bedwars.iml
 
 # target folder
