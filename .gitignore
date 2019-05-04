@@ -23,6 +23,8 @@
 hs_err_pid*
 
 # IDE
+target/*
+.idea/*
 target
 .idea
 bedwars.iml
