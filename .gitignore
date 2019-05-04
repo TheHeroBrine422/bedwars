@@ -22,16 +22,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-<<<<<<< HEAD
 # IDE
 target
 .idea
 bedwars.iml
-=======
-# IDE files
-.idea/*
-bedwars.iml
-
-# IDE folders
-target/*
->>>>>>> 724b5ba071bff3aa0032695409f1eaf1a2fb60b1
