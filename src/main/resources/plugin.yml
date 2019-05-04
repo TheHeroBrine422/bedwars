@@ -1,0 +1,6 @@
+name: BedWars
+version: ${project.version}
+main: red.nulled.bedwars.BedWars
+api-version: 1.13
+authors: [Ami, Atlasted, Hero]
+description: A clone of Hypixel's "Bed Wars" game-mode. 
