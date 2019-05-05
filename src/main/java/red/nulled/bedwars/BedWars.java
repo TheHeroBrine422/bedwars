@@ -12,6 +12,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,8 @@ public final class BedWars extends JavaPlugin implements Listener {
     Set<int[]> diamondBlocks = new HashSet<int[]>();
     Set<int[]> emeraldBlocks = new HashSet<int[]>();
     Map<String, int[]> purpurBlocks = new HashMap<String, int[]>();
+    Map<String, String> teams = new HashMap<String, String>(); // Key- Player   Value-Team (LIME, RED, YELLOW, BLUE)
+    String[] teamColors = new String[4];
 
     int centerXZ = 0; // config - area that it searches for diamond/emerald blocks
     int centerY = 40;
@@ -35,18 +38,18 @@ public final class BedWars extends JavaPlugin implements Listener {
     int maxDiamondsEmeralds = 8; // max number of diamonds or emerald at a generator
 
     public void shopItemAdd(Material item, String name, String currency, int price, int slot, int quantity, Inventory store) {
-        ItemStack ironSword = new ItemStack(item, quantity);
-        ItemMeta ironSwordMeta = ironSword.getItemMeta();
+        ItemStack itemStack = new ItemStack(item, quantity);
+        ItemMeta itemMeta = itemStack.getItemMeta();
         ArrayList<String> lore= new ArrayList<String>();
 
         lore.add(" ");
         lore.add("Cost: "+price+" "+currency);
 
-        ironSwordMeta.setLore(lore);
-        ironSwordMeta.setDisplayName(name);
+        itemMeta.setLore(lore);
+        itemMeta.setDisplayName(name);
 
-        ironSword.setItemMeta(ironSwordMeta);
-        store.setItem(slot, ironSword);
+        itemStack.setItemMeta(itemMeta);
+        store.setItem(slot, itemStack);
     }
 
     public void shopItemBuy(Material item, String name, Material currency, int price, int quantity, Player p) {
@@ -149,7 +152,7 @@ public final class BedWars extends JavaPlugin implements Listener {
             int rangeY = radiusY * 2 + 1;
 
             System.out.println("[BedWars] Finding Purpur Blocks");
-
+            int counter = 0;
             Location test = new Location(targetWorld, startXZ, startY, startXZ);
             for (int x = startXZ; x < (startXZ + rangeXZ); x++) {
                 for (int z = startXZ; z < (startXZ + rangeXZ); z++) {
@@ -164,6 +167,10 @@ public final class BedWars extends JavaPlugin implements Listener {
                             Location color = test.add(0,-1,0);
 
                             blocks.put(color.getBlock().getType().toString().split("_")[0], local);
+                            if (counter <= 3) {
+                                teamColors[counter] = color.getBlock().getType().toString().split("_")[0];
+                            }
+                            counter++;
                             System.out.println("[BedWars] " + x + " " + y + " " + z + " " + color.getBlock().getType().toString().split("_")[0] + " Purpur Block Found");
                         }
                     }
@@ -242,6 +249,36 @@ public final class BedWars extends JavaPlugin implements Listener {
             target.openInventory(store);
 
             return true;
+        } else if (cmd.getName().equalsIgnoreCase("setTeam")) {
+            if (args.length != 2) {
+                return false;
+            }
+
+            boolean online = false;
+            boolean realTeamColor = false;
+
+            Collection<? extends Player> c = Bukkit.getOnlinePlayers();
+            for(Player player : c){
+                if (player.getDisplayName().equals(args[0])) {
+                    online = true;
+                }
+            }
+
+            for (int i=0; i < teamColors.length; i++) {
+                if (teamColors[i].equals(args[1])) {
+                    realTeamColor = true;
+                }
+            }
+
+            if (!online || !realTeamColor) {
+                return false;
+            }
+
+            teams.put(args[0], args[1]);
+
+            System.out.println("[BedWars] Teams: "+teams);
+
+            return true;
         }
 
     return false;
@@ -293,4 +330,10 @@ public final class BedWars extends JavaPlugin implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void autoRespawn(PlayerDeathEvent evt) {
+
+    }
+
 }
