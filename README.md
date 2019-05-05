@@ -12,7 +12,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
 
 ## To-Do List:
 
-- [ ] Diamond/Emerald Gens
+- [ ] Diamond/Emerald Generators
     - [x] Find Diamond/Emerald Blocks
     - [x] Drop items at Diamond/Emerald Blocks
     - [ ] Automate it without commands
