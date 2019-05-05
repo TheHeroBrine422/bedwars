@@ -3,6 +3,7 @@ package red.nulled.bedwars;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -38,7 +39,9 @@ public final class BedWars extends JavaPlugin implements Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
-        int dropHeight = 4;
+        World targetWorld = target.getWorld();
+
+        int dropHeight = 3; // config - height that the emeralds/diamonds are dropped over the blocks
 
         if (cmd.getName().equalsIgnoreCase("finddiamond") || cmd.getName().equalsIgnoreCase("findemerald")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
             Material findMaterial;
@@ -54,11 +57,18 @@ public final class BedWars extends JavaPlugin implements Listener {
             }
 
             System.out.println("[BedWars] Finding "+material+" Blocks");
-            int startXZ = -150;
-            int startY = 36;
-            int rangeXZ = 301;
-            int rangeY = 9;
-            Location test = new Location(target.getWorld(), startXZ, startY, startXZ);
+
+            int centerXZ = 0; // config - area that it searches for diamond/emerald blocks
+            int centerY = 40;
+            int radiusXZ = 100;
+            int radiusY = 4; // config - end
+
+            int startXZ = centerXZ-radiusXZ;
+            int startY = centerY-radiusY;
+            int rangeXZ = radiusXZ*2+1;
+            int rangeY = radiusY*2+1;
+
+            Location test = new Location(targetWorld, startXZ, startY, startXZ);
             for (int x = startXZ; x<(startXZ+rangeXZ); x++) {
                 for (int z = startXZ; z<(startXZ+rangeXZ); z++) {
                     for (int y = startY; y<(startY+rangeY); y++) {
@@ -84,13 +94,13 @@ public final class BedWars extends JavaPlugin implements Listener {
             return true;
         } else if (cmd.getName().equalsIgnoreCase("dropdiamond")) {
             for (int[] local : diamondBlocks) {
-                target.getWorld().dropItem(new Location(target.getWorld(),local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.DIAMOND));
+                targetWorld.dropItem(new Location(targetWorld,local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.DIAMOND));
             }
 
             return true;
         } else if (cmd.getName().equalsIgnoreCase("dropemerald")) {
             for (int[] local : emeraldBlocks) {
-                target.getWorld().dropItem(new Location(target.getWorld(),local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.EMERALD));
+                targetWorld.dropItem(new Location(targetWorld,local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.EMERALD));
             }
 
             return true;
