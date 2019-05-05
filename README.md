@@ -37,7 +37,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
 ## Marker Blocks for maps:
 - Diamond/Emerald (Generators)
 - Purpur (Regular Base Generators)
-    - Colored Concrete undernearth, determines team color
+    - Colored block (Concrete has been tested but others *should* work.) underneath, determines team color.
 
 
 ## License
