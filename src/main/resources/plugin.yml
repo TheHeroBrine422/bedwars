@@ -20,3 +20,9 @@ commands:
   store:
     description: Opens a GUI Store
     usage: /store
+  findGen:
+    description: Finds all Purpur Blocks in a certain range around 0,0,0 (hardcoded into plugin) and logs them in the Console and in a HashSet
+    usage: /findGen
+  dropGen:
+    description: Drops 1 iron or gold at all Purpur blocks found from /findgen
+    usage: /dropGen {Iron/Gold/Emerald (0/1/2)} {Color}

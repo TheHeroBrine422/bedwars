@@ -20,7 +20,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
 - [ ] Regular Generators
     - [x] Find Purpur Blocks
     - [x] Drop items at Diamond/Emerald Blocks
-    - [ ] Make it addressable by team color
+    - [x] Make it addressable by team color
     - [ ] Automate it without commands
     - [ ] Stop drops at a cap of items
 - [ ] Store
@@ -30,7 +30,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
 - [ ] Team System
 - [ ] Bed Stuff
 - [ ] Classes
-    - [ ] 
+    - [ ]
 - [ ] Scoreboard
 
 
