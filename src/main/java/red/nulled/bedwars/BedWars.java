@@ -16,7 +16,8 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public final class BedWars extends JavaPlugin implements Listener {
-    HashSet diaBlocks = new HashSet();
+    HashSet diamondBlocks = new HashSet();
+    HashSet emeraldBlocks = new HashSet();
 
     @Override
     public void onEnable() {
@@ -38,6 +39,7 @@ public final class BedWars extends JavaPlugin implements Listener {
             Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
             Material findMaterial;
             String material;
+            HashSet blocks = new HashSet();
 
             if (cmd.getName().equalsIgnoreCase("finddiamond")) {
                 findMaterial = Material.DIAMOND_BLOCK;
@@ -46,7 +48,7 @@ public final class BedWars extends JavaPlugin implements Listener {
                 findMaterial = Material.EMERALD_BLOCK;
                 material = "Emerald";
             }
-            diaBlocks = new HashSet();
+
             System.out.println("[BedWars] Finding "+material+" Blocks");
             int startXZ = -150;
             int startY = 36;
@@ -63,11 +65,16 @@ public final class BedWars extends JavaPlugin implements Listener {
                             local[1] = y;
                             local[2] = z;
 
-                            diaBlocks.add(local);
-                            System.out.println("[BedWars] "+x+" "+y+" "+z+" Diamond Block Found");
+                            blocks.add(local);
+                            System.out.println("[BedWars] "+x+" "+y+" "+z+" "+material+" Block Found");
                         }
                     }
                 }
+            }
+            if (material.equals("Diamond")) {
+                diamondBlocks = blocks;
+            } else {
+                emeraldBlocks = blocks;
             }
 
             return true;
