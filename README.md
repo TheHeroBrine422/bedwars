@@ -14,7 +14,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
 
 - [ ] Diamond/Emerald Gens
     - [x] Find Diamond/Emerald Blocks
-    - [x] Drop items at Diamond/Emerlad Blocks
+    - [x] Drop items at Diamond/Emerald Blocks
     - [ ] Automate it without commands
     - [ ] Stop drops at a cap of items
 - [ ] Store
