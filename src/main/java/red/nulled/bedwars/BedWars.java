@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -27,9 +29,10 @@ public final class BedWars extends JavaPlugin implements Listener {
 
     int centerXZ = 0; // config - area that it searches for diamond/emerald blocks
     int centerY = 40;
-    int radiusXZ = 100;
+    int radiusXZ = 150;
     int radiusY = 4; // end of area config
     int dropHeight = 2; // height that items are dropped over the blocks
+    int maxDiamondsEmeralds = 8; // max number of diamonds or emerald at a generator
 
     public void shopItemAdd(Material item, String name, String currency, int price, int slot, int quantity, Inventory store) {
         ItemStack ironSword = new ItemStack(item, quantity);
@@ -38,7 +41,6 @@ public final class BedWars extends JavaPlugin implements Listener {
 
         lore.add(" ");
         lore.add("Cost: "+price+" "+currency);
-        //lore.add("Quantity: "+quantity);
 
         ironSwordMeta.setLore(lore);
         ironSwordMeta.setDisplayName(name);
@@ -173,15 +175,34 @@ public final class BedWars extends JavaPlugin implements Listener {
             System.out.println(blocks);
 
             return true;
-        } else if (cmd.getName().equalsIgnoreCase("dropdiamond")) {
-            for (int[] local : diamondBlocks) {
-                targetWorld.dropItem(new Location(targetWorld,local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.DIAMOND));
+        } else if (cmd.getName().equalsIgnoreCase("dropemerald") || cmd.getName().equalsIgnoreCase("dropdiamond")) {
+            Set<int[]> blocks;
+            Material dropMaterial;
+            if (cmd.getName().equalsIgnoreCase("dropemerald")) {
+                blocks = emeraldBlocks;
+                dropMaterial = Material.EMERALD;
+            } else {
+                blocks = diamondBlocks;
+                dropMaterial = Material.DIAMOND;
             }
 
-            return true;
-        } else if (cmd.getName().equalsIgnoreCase("dropemerald")) {
-            for (int[] local : emeraldBlocks) {
-                targetWorld.dropItem(new Location(targetWorld,local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.EMERALD));
+            for (int[] local : blocks) {
+                List<Entity> nearbyEntites = (List<Entity>) new Location(targetWorld,local[0],(local[1]+(dropHeight/2)),local[2]).getNearbyEntities(3,3,3);
+                if (nearbyEntites.size() == 0) {
+                    targetWorld.dropItem(new Location(targetWorld,local[0],(local[1]+dropHeight),local[2]), new ItemStack(dropMaterial));
+                } else {
+                    int count = 0;
+                    for (int i = 0; i < nearbyEntites.size(); i++) {
+                        Item temp = (Item) nearbyEntites.get(i);
+                        ItemStack tempStack = temp.getItemStack();
+                        if (tempStack.getType() == dropMaterial) {
+                            count = count + tempStack.getAmount();
+                        }
+                    }
+                    if (count < maxDiamondsEmeralds) {
+                        targetWorld.dropItem(new Location(targetWorld, local[0], (local[1] + dropHeight), local[2]), new ItemStack(dropMaterial));
+                    }
+                }
             }
 
             return true;

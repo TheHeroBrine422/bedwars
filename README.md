@@ -16,7 +16,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
     - [x] Find Diamond/Emerald Blocks
     - [x] Drop items at Diamond/Emerald Blocks
     - [ ] Automate it without commands
-    - [ ] Stop drops at a cap of items
+    - [x] Stop drops at a cap of items
 - [ ] Regular Generators
     - [x] Find Purpur Blocks
     - [x] Drop items at Diamond/Emerald Blocks
