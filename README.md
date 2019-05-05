@@ -10,6 +10,19 @@ A clone of Hypixel's "Bed Wars" game-mode.
 ## Main contributors
 [Ami](https://git.nulled.red/ami), [Hero](https://git.nulled.red/hero), [trailotan](https://git.nulled.red/trailotan), and [Atlasted](https://git.nulled.red/Atlasted) are the main contributors.
 
+## To-Do List:
+
+- [ ] Diamond/Emerald Gens
+    - [x] Find Diamond/Emerald Blocks
+    - [x] Drop items at Diamond/Emerlad Blocks
+    - [ ] Automate it without commands
+- [ ] Store
+    - [ ] GUI
+    - [ ] Team Upgrades
+    - [ ] Decide Prices/Items 
+- [ ] Team System
+- [ ] Bed Stuff
+
 ## License
 
 Copyright 2019 Nulled.red Community Authors
