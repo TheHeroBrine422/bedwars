@@ -9,14 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public final class BedWars extends JavaPlugin implements Listener {
@@ -38,17 +34,20 @@ public final class BedWars extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("helloworld")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
-            Player target = Bukkit.getServer().getPlayer(UUID.fromString("d03ea078-de10-4538-b696-b7fbbd2498e7")); // UUID is TheHeroBrine422
-            /*Block targetBlock = target.getTargetBlock(100);
-            if (targetBlock.getType() == Material.DIRT) {
-                target.sendMessage("It's Dirt!");
-            }
+        if (cmd.getName().equalsIgnoreCase("finddiamond") || cmd.getName().equalsIgnoreCase("findemerald")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
+            Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
+            Material findMaterial;
+            String material;
 
-            //sender.sendMessage("hello world!");*/
-            
+            if (cmd.getName().equalsIgnoreCase("finddiamond")) {
+                findMaterial = Material.DIAMOND_BLOCK;
+                material = "Diamond";
+            } else {
+                findMaterial = Material.EMERALD_BLOCK;
+                material = "Emerald";
+            }
             diaBlocks = new HashSet();
-            System.out.println("[BedWars] running");
+            System.out.println("[BedWars] Finding "+material+" Blocks");
             int startXZ = -150;
             int startY = 36;
             int rangeXZ = 301;
@@ -58,41 +57,42 @@ public final class BedWars extends JavaPlugin implements Listener {
                 for (int z = startXZ; z<(startXZ+rangeXZ); z++) {
                     for (int y = startY; y<(startY+rangeY); y++) {
                         test.set(x,y,z);
-                        if (test.getBlock().getType() == Material.DIAMOND_BLOCK) {
+                        if (test.getBlock().getType() == findMaterial) {
                             int[] local = new int[3];
                             local[0] = x;
                             local[1] = y;
                             local[2] = z;
 
                             diaBlocks.add(local);
-                            System.out.println(x+" "+y+" "+z+" Diamond Block Found");
+                            System.out.println("[BedWars] "+x+" "+y+" "+z+" Diamond Block Found");
                         }
                     }
                 }
             }
 
-
-            System.out.println(diaBlocks);
-
-            return true;
-        } else if (cmd.getName().equalsIgnoreCase("return")) {
-            System.out.println(diaBlocks);
-
             return true;
         }
         return false;
+
+        /* some test code that i wanna keep
+        Block targetBlock = target.getTargetBlock(100);
+        if (targetBlock.getType() == Material.DIRT) {
+            target.sendMessage("It's Dirt!");
+        }
+        sender.sendMessage("hello world!");*/
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
-        System.out.println("[BedWars] Block Break Player: "+p.getDisplayName()+" Block: "+b.toString());
+        System.out.println("[BedWars] Block Break   Player: "+p.getDisplayName()+"   Block: "+b.toString());
 
+        /*test code that i wanna keep for when we start adding block breaking mechanics if we do add those.
         if (b.getType() == Material.DIRT) {
             b.setType(Material.AIR);
             p.getInventory().addItem(new ItemStack(Material.DIAMOND));
             p.sendMessage("Diamond added to your inventory");
-        }
+        }*/
     }
 }

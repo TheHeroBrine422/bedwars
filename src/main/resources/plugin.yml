@@ -5,9 +5,9 @@ api-version: 1.13
 authors: [Ami, Atlasted, Hero]
 description: A clone of Hypixel's "Bed Wars" game-mode.
 commands:
-  helloworld:
-    description: Puts "hello world!" in the chat
-    usage: /helloworld
-  return:
-    description: Puts "hello world!" in the chat
-    usage: /return
+  findDiamond:
+    description: Finds all diamond blocks in a certain range around 0,0,0 (hardcoded into plugin) and logs them in the Console and in a HashSet
+    usage: /findDiamond
+  findEmerald:
+    description: Finds all emerald blocks in a certain range around 0,0,0 (hardcoded into plugin) and logs them in the Console and in a HashSet
+    usage: /findEmerald
