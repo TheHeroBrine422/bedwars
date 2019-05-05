@@ -17,12 +17,28 @@ A clone of Hypixel's "Bed Wars" game-mode.
     - [x] Drop items at Diamond/Emerald Blocks
     - [ ] Automate it without commands
     - [ ] Stop drops at a cap of items
+- [ ] Regular Generators
+    - [x] Find Purpur Blocks
+    - [x] Drop items at Diamond/Emerald Blocks
+    - [ ] Make it addressable by team color
+    - [ ] Automate it without commands
+    - [ ] Stop drops at a cap of items
 - [ ] Store
     - [ ] GUI
     - [ ] Team Upgrades
     - [ ] Decide Prices/Items
 - [ ] Team System
 - [ ] Bed Stuff
+- [ ] Classes
+    - [ ] 
+- [ ] Scoreboard
+
+
+## Marker Blocks for maps:
+- Diamond/Emerald (Generators)
+- Purpur (Regular Base Generators)
+    - Colored Concrete undernearth, determines team color
+
 
 ## License
 
