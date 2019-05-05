@@ -1,24 +1,26 @@
 package red.nulled.bedwars;
 
 import org.bukkit.Bukkit;
+import org.bukkit.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public final class BedWars extends JavaPlugin implements Listener {
+    Map<String, Long> playersBought = new HashMap<String, Long>();
     Set<int[]> diamondBlocks = new HashSet<int[]>();
     Set<int[]> emeraldBlocks = new HashSet<int[]>();
 
@@ -26,6 +28,7 @@ public final class BedWars extends JavaPlugin implements Listener {
     public void onEnable() {
         // Plugin startup logic
         System.out.println("[BedWars] The server has started and the plugin is enabled!");
+        getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -41,7 +44,7 @@ public final class BedWars extends JavaPlugin implements Listener {
         Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
         World targetWorld = target.getWorld();
 
-        int dropHeight = 3; // config - height that the emeralds/diamonds are dropped over the blocks
+        int dropHeight = 2; // config - height that the emeralds/diamonds are dropped over the blocks
 
         if (cmd.getName().equalsIgnoreCase("finddiamond") || cmd.getName().equalsIgnoreCase("findemerald")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
             Material findMaterial;
@@ -104,6 +107,27 @@ public final class BedWars extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (cmd.getName().equalsIgnoreCase("store")) {
+            Inventory store = getServer().createInventory(target, 36, "Store");
+
+            //Here you define our item
+            ItemStack ref1 = new ItemStack(Material.IRON_SWORD);
+            ItemMeta metaref1 = ref1.getItemMeta();
+            ArrayList<String> lore= new ArrayList<String>();
+
+            lore.add(" ");
+            lore.add("Cost: 30 iron");
+
+            metaref1.setLore(lore);
+            metaref1.setDisplayName("Iron Sword");
+
+            ref1.setItemMeta(metaref1);
+            store.setItem(0, ref1);
+
+            //Here opens the inventory
+            target.openInventory(store);
+
+            return true;
         }
 
     return false;
@@ -116,17 +140,58 @@ public final class BedWars extends JavaPlugin implements Listener {
         sender.sendMessage("hello world!");*/
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
         System.out.println("[BedWars] Block Break   Player: "+p.getDisplayName()+"   Block: "+b.toString());
 
-        /*test code that i wanna keep for when we start adding block breaking mechanics if we do add those.
+        //test code that i wanna keep for when we start adding block breaking mechanics if we do add those.
         if (b.getType() == Material.DIRT) {
             b.setType(Material.AIR);
             p.getInventory().addItem(new ItemStack(Material.DIAMOND));
             p.sendMessage("Diamond added to your inventory");
-        }*/
+        }
+    }*/
+
+    @EventHandler
+    private void inventoryClick(InventoryClickEvent e) {
+
+        Player p = (Player) e.getWhoClicked();
+
+        if (playersBought.get(p.getDisplayName()) == null) {
+            playersBought.put(p.getDisplayName(),(long) 0);
+        }
+
+        if (e.getView().getTitle().equalsIgnoreCase("Store")) {
+            e.setCancelled(true); // stop from picking up item
+            if (playersBought.get(p.getDisplayName())+100 < System.currentTimeMillis()) {
+
+                if ((e.getCurrentItem() == null) || (e.getCurrentItem().getType().equals(Material.AIR))) { // sees what they grabbed. If nothing do nothing
+                    return;
+                }
+
+                if (e.getSlot() == 0) { // if 5th slot and its the help book do following
+                    int ironCount = 0;
+                    for (int i = 0; i < 36; i++) {
+                        ItemStack temp = p.getInventory().getItem(i);
+                        if (temp != null) { // thing is null if no item there.
+                            if (temp.getType() == Material.IRON_INGOT) {
+                                ironCount = ironCount + temp.getAmount();
+                            }
+                        }
+                    }
+                    if (ironCount >= 30) {
+                        p.sendMessage("Bought Iron Sword " + ironCount); // send commands and sleep
+                        p.getInventory().remove(Material.IRON_INGOT);
+                        p.getInventory().addItem(new ItemStack(Material.IRON_INGOT, ironCount - 30));
+                        p.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
+
+                        playersBought.put(p.getDisplayName(),System.currentTimeMillis());
+                    }
+                }
+            }
+        }
     }
+
 }

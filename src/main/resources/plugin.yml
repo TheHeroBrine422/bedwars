@@ -17,3 +17,6 @@ commands:
   dropEmerald:
     description: Drops 1 emerald at all diamond blocks found from /findEmerald
     usage: /dropEmerald
+  store:
+    description: Opens a GUI Store
+    usage: /store
