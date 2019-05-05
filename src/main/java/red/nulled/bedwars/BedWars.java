@@ -1,31 +1,98 @@
 package red.nulled.bedwars;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.EventHandler;
 
-public final class BedWars extends JavaPlugin {
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+public final class BedWars extends JavaPlugin implements Listener {
+    HashSet diaBlocks = new HashSet();
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        System.out.println("The server has started and the plugin is enabled!");
+        System.out.println("[BedWars] The server has started and the plugin is enabled!");
+        getServer().getPluginManager().registerEvents(this, this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         // test comment
-        System.out.println("The server is stopping and the plugin is disabled!");
+        System.out.println("[BedWars] The server is stopping and the plugin is disabled!");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("helloworld")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
-            //Player target = Bukkit.getServer().getPlayer(UUID.fromString("d03ea078-de10-4538-b696-b7fbbd2498e7"));
-            sender.sendMessage("hello world!");
+            Player target = Bukkit.getServer().getPlayer(UUID.fromString("d03ea078-de10-4538-b696-b7fbbd2498e7")); // UUID is TheHeroBrine422
+            /*Block targetBlock = target.getTargetBlock(100);
+            if (targetBlock.getType() == Material.DIRT) {
+                target.sendMessage("It's Dirt!");
+            }
+
+            //sender.sendMessage("hello world!");*/
+            
+            diaBlocks = new HashSet();
+            System.out.println("[BedWars] running");
+            int startXZ = -150;
+            int startY = 36;
+            int rangeXZ = 301;
+            int rangeY = 9;
+            Location test = new Location(target.getWorld(), startXZ, startY, startXZ);
+            for (int x = startXZ; x<(startXZ+rangeXZ); x++) {
+                for (int z = startXZ; z<(startXZ+rangeXZ); z++) {
+                    for (int y = startY; y<(startY+rangeY); y++) {
+                        test.set(x,y,z);
+                        if (test.getBlock().getType() == Material.DIAMOND_BLOCK) {
+                            int[] local = new int[3];
+                            local[0] = x;
+                            local[1] = y;
+                            local[2] = z;
+
+                            diaBlocks.add(local);
+                            System.out.println(x+" "+y+" "+z+" Diamond Block Found");
+                        }
+                    }
+                }
+            }
+
+
+            System.out.println(diaBlocks);
+
+            return true;
+        } else if (cmd.getName().equalsIgnoreCase("return")) {
+            System.out.println(diaBlocks);
+
             return true;
         }
         return false;
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
+        Block b = e.getBlock();
+        System.out.println("[BedWars] Block Break Player: "+p.getDisplayName()+" Block: "+b.toString());
+
+        if (b.getType() == Material.DIRT) {
+            b.setType(Material.AIR);
+            p.getInventory().addItem(new ItemStack(Material.DIAMOND));
+            p.sendMessage("Diamond added to your inventory");
+        }
     }
 }

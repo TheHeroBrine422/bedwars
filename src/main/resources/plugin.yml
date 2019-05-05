@@ -8,3 +8,6 @@ commands:
   helloworld:
     description: Puts "hello world!" in the chat
     usage: /helloworld
+  return:
+    description: Puts "hello world!" in the chat
+    usage: /return
