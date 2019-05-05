@@ -111,18 +111,18 @@ public final class BedWars extends JavaPlugin implements Listener {
             Inventory store = getServer().createInventory(target, 36, "Store");
 
             //Here you define our item
-            ItemStack ref1 = new ItemStack(Material.IRON_SWORD);
-            ItemMeta metaref1 = ref1.getItemMeta();
+            ItemStack ironSword = new ItemStack(Material.IRON_SWORD);
+            ItemMeta ironSwordMeta = ironSword.getItemMeta();
             ArrayList<String> lore= new ArrayList<String>();
 
             lore.add(" ");
             lore.add("Cost: 30 iron");
 
-            metaref1.setLore(lore);
-            metaref1.setDisplayName("Iron Sword");
+            ironSwordMeta.setLore(lore);
+            ironSwordMeta.setDisplayName("Iron Sword");
 
-            ref1.setItemMeta(metaref1);
-            store.setItem(0, ref1);
+            ironSword.setItemMeta(ironSwordMeta);
+            store.setItem(0, ironSword);
 
             //Here opens the inventory
             target.openInventory(store);
@@ -193,5 +193,4 @@ public final class BedWars extends JavaPlugin implements Listener {
             }
         }
     }
-
 }
