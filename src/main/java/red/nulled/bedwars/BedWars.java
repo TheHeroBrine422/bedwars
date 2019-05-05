@@ -24,6 +24,47 @@ public final class BedWars extends JavaPlugin implements Listener {
     Set<int[]> diamondBlocks = new HashSet<int[]>();
     Set<int[]> emeraldBlocks = new HashSet<int[]>();
 
+    public void shopItemAdd(Material item, String name, String currency, int price, int slot, int quantity, Inventory store) {
+        ItemStack ironSword = new ItemStack(item);
+        ItemMeta ironSwordMeta = ironSword.getItemMeta();
+        ArrayList<String> lore= new ArrayList<String>();
+
+        lore.add(" ");
+        lore.add("Cost: "+price+" "+currency);
+        lore.add("Quantity: "+quantity);
+
+        ironSwordMeta.setLore(lore);
+        ironSwordMeta.setDisplayName(name);
+
+        ironSword.setItemMeta(ironSwordMeta);
+        store.setItem(slot, ironSword);
+    }
+
+    public void shopItemBuy(Material item, String name, Material currency, int price, int quantity, Player p) {
+        int count = getCount(currency,p);
+        if (count >= price) {
+            p.sendMessage("Bought "+name); // send commands and sleep
+            p.getInventory().remove(currency);
+            p.getInventory().addItem(new ItemStack(currency, count - 30));
+            p.getInventory().addItem(new ItemStack(item,quantity));
+
+            playersBought.put(p.getDisplayName(),System.currentTimeMillis());
+        }
+    }
+
+    public int getCount (Material item, Player p) {
+        int count = 0;
+        for (int i = 0; i < 36; i++) {
+            ItemStack temp = p.getInventory().getItem(i);
+            if (temp != null) { // thing is null if no item there.
+                if (temp.getType() == item) {
+                    count = count + temp.getAmount();
+                }
+            }
+        }
+        return count;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -110,19 +151,7 @@ public final class BedWars extends JavaPlugin implements Listener {
         } else if (cmd.getName().equalsIgnoreCase("store")) {
             Inventory store = getServer().createInventory(target, 36, "Store");
 
-            //Here you define our item
-            ItemStack ironSword = new ItemStack(Material.IRON_SWORD);
-            ItemMeta ironSwordMeta = ironSword.getItemMeta();
-            ArrayList<String> lore= new ArrayList<String>();
-
-            lore.add(" ");
-            lore.add("Cost: 30 iron");
-
-            ironSwordMeta.setLore(lore);
-            ironSwordMeta.setDisplayName("Iron Sword");
-
-            ironSword.setItemMeta(ironSwordMeta);
-            store.setItem(0, ironSword);
+            shopItemAdd(Material.IRON_SWORD, "Iron Sword", "Iron Ingots", 30, 0, 1, store);
 
             //Here opens the inventory
             target.openInventory(store);
@@ -172,23 +201,7 @@ public final class BedWars extends JavaPlugin implements Listener {
                 }
 
                 if (e.getSlot() == 0) { // if 5th slot and its the help book do following
-                    int ironCount = 0;
-                    for (int i = 0; i < 36; i++) {
-                        ItemStack temp = p.getInventory().getItem(i);
-                        if (temp != null) { // thing is null if no item there.
-                            if (temp.getType() == Material.IRON_INGOT) {
-                                ironCount = ironCount + temp.getAmount();
-                            }
-                        }
-                    }
-                    if (ironCount >= 30) {
-                        p.sendMessage("Bought Iron Sword " + ironCount); // send commands and sleep
-                        p.getInventory().remove(Material.IRON_INGOT);
-                        p.getInventory().addItem(new ItemStack(Material.IRON_INGOT, ironCount - 30));
-                        p.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
-
-                        playersBought.put(p.getDisplayName(),System.currentTimeMillis());
-                    }
+                    shopItemBuy(Material.IRON_SWORD, "Iron Sword", Material.IRON_INGOT, 30, 1, p);
                 }
             }
         }
