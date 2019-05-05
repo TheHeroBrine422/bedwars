@@ -9,15 +9,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public final class BedWars extends JavaPlugin implements Listener {
-    HashSet diamondBlocks = new HashSet();
-    HashSet emeraldBlocks = new HashSet();
+    Set<int[]> diamondBlocks = new HashSet<int[]>();
+    Set<int[]> emeraldBlocks = new HashSet<int[]>();
 
     @Override
     public void onEnable() {
@@ -35,11 +37,13 @@ public final class BedWars extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
+        int dropHeight = 4;
+
         if (cmd.getName().equalsIgnoreCase("finddiamond") || cmd.getName().equalsIgnoreCase("findemerald")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
-            Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
             Material findMaterial;
             String material;
-            HashSet blocks = new HashSet();
+            Set<int[]> blocks = new HashSet<int[]>();
 
             if (cmd.getName().equalsIgnoreCase("finddiamond")) {
                 findMaterial = Material.DIAMOND_BLOCK;
@@ -78,8 +82,21 @@ public final class BedWars extends JavaPlugin implements Listener {
             }
 
             return true;
+        } else if (cmd.getName().equalsIgnoreCase("dropdiamond")) {
+            for (int[] local : diamondBlocks) {
+                target.getWorld().dropItem(new Location(target.getWorld(),local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.DIAMOND));
+            }
+
+            return true;
+        } else if (cmd.getName().equalsIgnoreCase("dropemerald")) {
+            for (int[] local : emeraldBlocks) {
+                target.getWorld().dropItem(new Location(target.getWorld(),local[0],(local[1]+dropHeight),local[2]), new ItemStack(Material.EMERALD));
+            }
+
+            return true;
         }
-        return false;
+
+    return false;
 
         /* some test code that i wanna keep
         Block targetBlock = target.getTargetBlock(100);

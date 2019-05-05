@@ -11,3 +11,9 @@ commands:
   findEmerald:
     description: Finds all emerald blocks in a certain range around 0,0,0 (hardcoded into plugin) and logs them in the Console and in a HashSet
     usage: /findEmerald
+  dropDiamond:
+    description: Drops 1 diamond at all diamond blocks found from /findDiamond
+    usage: /dropDiamond
+  dropEmerald:
+    description: Drops 1 emerald at all diamond blocks found from /findEmerald
+    usage: /dropEmerald
