@@ -200,10 +200,12 @@ public final class BedWars extends JavaPlugin implements Listener {
                 } else {
                     int count = 0;
                     for (int i = 0; i < nearbyEntites.size(); i++) {
-                        Item temp = (Item) nearbyEntites.get(i);
-                        ItemStack tempStack = temp.getItemStack();
-                        if (tempStack.getType() == dropMaterial) {
-                            count = count + tempStack.getAmount();
+                        if (nearbyEntites.get(i).getType().toString().equals("DROPPED_ITEM")) {
+                            Item temp = (Item) nearbyEntites.get(i);
+                            ItemStack tempStack = temp.getItemStack();
+                            if (tempStack.getType() == dropMaterial) {
+                                count = count + tempStack.getAmount();
+                            }
                         }
                     }
                     if (count < maxDiamondsEmeralds) {
