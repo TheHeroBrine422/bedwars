@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -338,21 +339,28 @@ public final class BedWars extends JavaPlugin implements Listener {
     public void autoRespawn(EntityDamageEvent event) {
         if (event.getEntity().getType().toString().equals("PLAYER")) {
             Player target = (Player) event.getEntity();
-            System.out.println(target.getFireTicks());
-            //target.setFireTicks(50);
             if((target.getHealth()-event.getFinalDamage()) <= 0) {
                 event.setCancelled(true);
                 System.out.println("[BedWars] "+target.getDisplayName()+" has died!");
                 target.teleport(new Location(target.getWorld(), 0.5, 47, 0.5));
-                target.setHealth(20);
+                target.setHealth(20); // reset Health, Fire, & Potion Effects.    might need to add some more of these for resetting.
                 target.setFireTicks(0);
                 Collection<PotionEffect> potEffList = target.getActivePotionEffects();
                 for(PotionEffect potEff : potEffList){
                     target.removePotionEffect(potEff.getType());
                 }
-
             }
         }
     }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e){
+        //e.setCancelled(true);
+        Player target = e.getPlayer();
+        String msg = e.getMessage();
+        e.setFormat("%2$s");
+        e.setMessage("[VI-47] ["+target.getDisplayName()+"] "+msg);
+    }
+
 
 }
