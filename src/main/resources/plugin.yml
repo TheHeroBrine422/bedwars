@@ -29,3 +29,6 @@ commands:
   setTeam:
     description: Sets a players team value
     usage: /setTeam {Player} {Color}   REQUIRMENT-Run /findGen first.   This will also get shown if you use a invalid Player, or Color.
+  respawn:
+    description: testing a auto respawn thing
+    usage: /respawn

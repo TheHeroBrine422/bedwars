@@ -12,6 +12,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.*;
 
@@ -82,7 +84,6 @@ public final class BedWars extends JavaPlugin implements Listener {
         // Plugin startup logic
         System.out.println("[BedWars] The server has started and the plugin is enabled!");
         getServer().getPluginManager().registerEvents(this, this);
-        getServer().getPluginManager().registerEvents(this, this);
     }
 
     @Override
@@ -94,7 +95,7 @@ public final class BedWars extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player target = Bukkit.getServer().getPlayer(sender.getName()); // In the long run this will not be the final solution to getting the world needed below for test.
+        Player target = (Player) sender; // In the long run this will not be the final solution to getting the world needed below for test.
         World targetWorld = target.getWorld();
 
         if (cmd.getName().equalsIgnoreCase("finddiamond") || cmd.getName().equalsIgnoreCase("findemerald")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
@@ -281,6 +282,11 @@ public final class BedWars extends JavaPlugin implements Listener {
             System.out.println("[BedWars] Teams: "+teams);
 
             return true;
+        } else if (cmd.getName().equalsIgnoreCase("respawn")) {
+            target.setHealth(0);
+            target.spigot().respawn();
+
+            return true;
         }
 
     return false;
@@ -334,8 +340,24 @@ public final class BedWars extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void autoRespawn(PlayerDeathEvent evt) {
+    public void autoRespawn(EntityDamageEvent event) {
+        if (event.getEntity().getType().toString().equals("PLAYER")) {
+            Player target = (Player) event.getEntity();
+            System.out.println(target.getFireTicks());
+            //target.setFireTicks(50);
+            if((target.getHealth()-event.getFinalDamage()) <= 0) {
+                event.setCancelled(true);
+                System.out.println("[BedWars] "+target.getDisplayName()+" has died!");
+                target.teleport(new Location(target.getWorld(), 0.5, 47, 0.5));
+                target.setHealth(20);
+                target.setFireTicks(0);
+                Collection<PotionEffect> potEffList = target.getActivePotionEffects();
+                for(PotionEffect potEff : potEffList){
+                    target.removePotionEffect(potEff.getType());
+                }
 
+            }
+        }
     }
 
 }
