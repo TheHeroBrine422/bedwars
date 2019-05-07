@@ -282,11 +282,6 @@ public final class BedWars extends JavaPlugin implements Listener {
             System.out.println("[BedWars] Teams: "+teams);
 
             return true;
-        } else if (cmd.getName().equalsIgnoreCase("respawn")) {
-            target.setHealth(0);
-            target.spigot().respawn();
-
-            return true;
         }
 
     return false;
