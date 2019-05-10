@@ -26,6 +26,6 @@ commands:
   dropGen:
     description: Drops 1 iron or gold at all Purpur blocks found from /findgen
     usage: /dropGen {Iron/Gold/Emerald (0/1/2)} {Color}
-  setTeam:
-    description: Sets a players team value
-    usage: /setTeam {Player} {Color}   REQUIRMENT-Run /findGen first.   This will also get shown if you use a invalid Player, or Color.
+  heal:
+    description: Heals a player
+    usage: /heal
