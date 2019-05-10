@@ -1,0 +1,15 @@
+Shop:
+  slot0:
+    item: "IRON_SWORD"
+    itemName: "Iron Sword"
+    currency: "IRON_INGOT"
+    currencyName: "Iron Ingot"
+    price: 32
+    quantity: 1
+  slot1:
+    item: "WHITE_WOOL"
+    itemName: "Wool"
+    currency: "IRON_INGOT"
+    currencyName: "Iron Ingot"
+    price: 4
+    quantity: 16

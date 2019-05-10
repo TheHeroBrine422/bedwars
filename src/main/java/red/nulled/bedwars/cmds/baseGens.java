@@ -4,14 +4,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
-public class baseGens extends JavaPlugin{
+public class baseGens implements CommandExecutor {
     Map<String, int[]> purpurBlocks = new HashMap<String, int[]>();
     String[] teamColors = new String[4];
 

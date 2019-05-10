@@ -10,9 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class invClick implements Listener {
+public class storeBuy implements Listener {
     Map<String, Long> playersBought = new HashMap<String, Long>();
-
 
     public int getCount (Material item, Player p) {
         int count = 0;
@@ -27,13 +26,14 @@ public class invClick implements Listener {
         return count;
     }
 
-    public void shopItemBuy(Material item, String name, Material currency, int price, int quantity, Player p) {
+    public void shopItemBuy(String item, String name, Material currency, int price, int quantity, Player p) {
+        Material itemMat = Material.getMaterial(item);
         int count = getCount(currency,p);
         if (count >= price) {
             p.sendMessage("Bought "+name); // send commands and sleep
             p.getInventory().remove(currency);
             p.getInventory().addItem(new ItemStack(currency, count - price));
-            p.getInventory().addItem(new ItemStack(item,quantity));
+            p.getInventory().addItem(new ItemStack(itemMat,quantity));
 
             playersBought.put(p.getDisplayName(),System.currentTimeMillis());
         }
@@ -41,7 +41,6 @@ public class invClick implements Listener {
 
     @EventHandler
     private void inventoryClick(InventoryClickEvent e) {
-
         Player p = (Player) e.getWhoClicked();
 
         if (playersBought.get(p.getDisplayName()) == null) {
@@ -57,9 +56,9 @@ public class invClick implements Listener {
                 }
 
                 if (e.getSlot() == 0) { // if 5th slot and its the help book do following
-                    shopItemBuy(Material.IRON_SWORD, "Iron Sword", Material.IRON_INGOT, 30, 1, p);
+                    shopItemBuy("IRON_SWORD", "Iron Sword", Material.IRON_INGOT, 30, 1, p);
                 } else if (e.getSlot() == 1) {
-                    shopItemBuy(Material.WHITE_WOOL, "Wool", Material.IRON_INGOT, 4, 16, p);
+                    shopItemBuy("WHITE_WOOL", "Wool", Material.IRON_INGOT, 4, 16, p);
                 }
             }
         }
