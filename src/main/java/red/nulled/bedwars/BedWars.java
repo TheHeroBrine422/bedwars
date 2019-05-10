@@ -16,9 +16,6 @@ import red.nulled.bedwars.cmds.*;
 import java.util.*;
 
 public class BedWars extends JavaPlugin implements Listener {
-    Map<String, int[]> purpurBlocks = new HashMap<String, int[]>();
-    Map<String, String> teams = new HashMap<String, String>(); // Key- Player   Value-Team (LIME, RED, YELLOW, BLUE)
-
     public void shopItemAdd(Material item, String name, String currency, int price, int slot, int quantity, Inventory store) {
         ItemStack itemStack = new ItemStack(item, quantity);
         ItemMeta itemMeta = itemStack.getItemMeta();
