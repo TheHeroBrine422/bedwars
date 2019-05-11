@@ -6,12 +6,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import red.nulled.bedwars.BedWars;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class storeBuy implements Listener {
     Map<String, Long> playersBought = new HashMap<String, Long>();
+    Plugin plugin = BedWars.getPlugin(BedWars.class);
+
 
     public int getCount (Material item, Player p) {
         int count = 0;
@@ -26,14 +30,13 @@ public class storeBuy implements Listener {
         return count;
     }
 
-    public void shopItemBuy(String item, String name, Material currency, int price, int quantity, Player p) {
-        Material itemMat = Material.getMaterial(item);
+    public void shopItemBuy(Material item, String name, Material currency, int price, int quantity, Player p) {
         int count = getCount(currency,p);
         if (count >= price) {
             p.sendMessage("Bought "+name); // send commands and sleep
             p.getInventory().remove(currency);
             p.getInventory().addItem(new ItemStack(currency, count - price));
-            p.getInventory().addItem(new ItemStack(itemMat,quantity));
+            p.getInventory().addItem(new ItemStack(item,quantity));
 
             playersBought.put(p.getDisplayName(),System.currentTimeMillis());
         }
@@ -55,11 +58,12 @@ public class storeBuy implements Listener {
                     return;
                 }
 
-                if (e.getSlot() == 0) { // if 5th slot and its the help book do following
-                    shopItemBuy("IRON_SWORD", "Iron Sword", Material.IRON_INGOT, 30, 1, p);
-                } else if (e.getSlot() == 1) {
-                    shopItemBuy("WHITE_WOOL", "Wool", Material.IRON_INGOT, 4, 16, p);
+                for (int i = 0; i < 35; i++) {
+                    if (plugin.getConfig().getString("shop.slot" + i) != null && e.getSlot() == i) {
+                        shopItemBuy(Material.getMaterial(plugin.getConfig().getString("shop.slot" + i + ".item")), plugin.getConfig().getString("shop.slot" + i + ".itemName"), Material.getMaterial(plugin.getConfig().getString("shop.slot" + i + ".currency")), plugin.getConfig().getInt("shop.slot" + i + ".price"), plugin.getConfig().getInt("shop.slot" + i + ".quantity"), p);
+                    }
                 }
+
             }
         }
     }

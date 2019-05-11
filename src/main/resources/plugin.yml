@@ -29,3 +29,6 @@ commands:
   heal:
     description: Heals a player
     usage: /heal
+  test:
+    description: a test cmd that i can make do whatever I want
+    usage: /test

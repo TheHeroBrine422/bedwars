@@ -46,6 +46,10 @@ public class BedWars extends JavaPlugin implements Listener {
             target.setFoodLevel(20);
 
             return true;
+        } else if (cmd.getName().equalsIgnoreCase("test")) {
+            System.out.println(getConfig().getString("shop.slot0"));
+
+            return true;
         }
 
         return false;

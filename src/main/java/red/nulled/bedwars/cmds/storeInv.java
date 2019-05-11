@@ -8,12 +8,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
+import red.nulled.bedwars.BedWars;
 
 import java.util.ArrayList;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class storeInv implements CommandExecutor {
+
+    Plugin plugin = BedWars.getPlugin(BedWars.class);
+
     public void shopItemAdd(Material item, String name, String currency, int price, int slot, int quantity, Inventory store) {
         ItemStack itemStack = new ItemStack(item, quantity);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -36,8 +41,11 @@ public class storeInv implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("store")) {
             Inventory store = getServer().createInventory(target, 36, "Store");
 
-            shopItemAdd(Material.IRON_SWORD, "Iron Sword", "Iron Ingots", 30, 0, 1, store);
-            shopItemAdd(Material.WHITE_WOOL, "Wool", "Iron Ingots", 4, 1, 16, store);
+            for (int i = 0; i < 35; i++) {
+                if (plugin.getConfig().getString("shop.slot" + i) != null) {
+                    shopItemAdd(Material.getMaterial(plugin.getConfig().getString("shop.slot" + i + ".item")), plugin.getConfig().getString("shop.slot" + i + ".itemName"), plugin.getConfig().getString("shop.slot" + i + ".currencyName"), plugin.getConfig().getInt("shop.slot" + i + ".price"), i, plugin.getConfig().getInt("shop.slot" + i + ".quantity"), store);
+                }
+            }
 
             target.openInventory(store);
 
