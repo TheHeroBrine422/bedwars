@@ -20,7 +20,7 @@ public class dmg implements Listener {
                 System.out.println("[BedWars] "+target.getDisplayName()+" has died!");
                 target.teleport(new Location(target.getWorld(), 0.5, 47, 0.5));
                 target.setHealth(20); // reset Health, Fire, & Potion Effects.    might need to add some more of these for resetting.
-                target.setFireTicks(10);
+                target.setFireTicks(0);
                 Collection<PotionEffect> potEffList = target.getActivePotionEffects();
                 for(PotionEffect potEff : potEffList){
                     target.removePotionEffect(potEff.getType());

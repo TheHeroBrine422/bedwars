@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import static org.bukkit.Bukkit.getServer;
 
 public class storeInv implements CommandExecutor {
-
     Plugin plugin = BedWars.getPlugin(BedWars.class);
 
     public void shopItemAdd(Material item, String name, String currency, int price, int slot, int quantity, Inventory store) {
@@ -51,7 +50,6 @@ public class storeInv implements CommandExecutor {
 
             return true;
         }
-
 
             return false;
     }

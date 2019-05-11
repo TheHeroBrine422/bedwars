@@ -63,7 +63,6 @@ public class storeBuy implements Listener {
                         shopItemBuy(Material.getMaterial(plugin.getConfig().getString("shop.slot" + i + ".item")), plugin.getConfig().getString("shop.slot" + i + ".itemName"), Material.getMaterial(plugin.getConfig().getString("shop.slot" + i + ".currency")), plugin.getConfig().getInt("shop.slot" + i + ".price"), plugin.getConfig().getInt("shop.slot" + i + ".quantity"), p);
                     }
                 }
-
             }
         }
     }
