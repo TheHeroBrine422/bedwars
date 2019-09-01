@@ -24,7 +24,7 @@ Colors are hard coded. The colors are lime, red, blue, yellow.
     - [x] Drop items at Diamond/Emerald Blocks
     - [x] Make it addressable by team color
     - [ ] Automate it without commands
-    - [ ] Stop drops at a cap of items
+    - [x] Stop drops at a cap of items
 - [ ] Store
     - [ ] GUI
     - [ ] Team Upgrades

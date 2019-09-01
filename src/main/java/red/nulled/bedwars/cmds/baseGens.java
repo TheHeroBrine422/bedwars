@@ -6,14 +6,19 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import red.nulled.bedwars.BedWars;
 
 import java.util.*;
 
 public class baseGens implements CommandExecutor {
     Map<String, int[]> purpurBlocks = new HashMap<String, int[]>();
     String[] teamColors = new String[4];
+    Plugin plugin = BedWars.getPlugin(BedWars.class);
 
     int centerXZ = 0; // config - area that it searches for diamond/emerald blocks
     int centerY = 40;
@@ -65,10 +70,12 @@ public class baseGens implements CommandExecutor {
             purpurBlocks = blocks;
 
             System.out.println(blocks);
+            System.out.println(purpurBlocks);
 
             return true;
         } else if (cmd.getName().equalsIgnoreCase("dropgen")) {
             Material spawn;
+            int max;
 
             if (args.length != 2) {
                 return false;
@@ -76,21 +83,42 @@ public class baseGens implements CommandExecutor {
 
             if (args[0].equals("0") || args[0].equalsIgnoreCase("Iron")) {
                 spawn = Material.IRON_INGOT;
+                max = Integer.parseInt(plugin.getConfig().getString("gensMax.base.iron"));
             } else if (args[0].equals("1") || args[0].equalsIgnoreCase("Gold")) {
                 spawn = Material.GOLD_INGOT;
+                max = Integer.parseInt(plugin.getConfig().getString("gensMax.base.gold"));
             } else if (args[0].equals("2") || args[0].equalsIgnoreCase("Emerald")) {
+                max = Integer.parseInt(plugin.getConfig().getString("gensMax.base.emerald"));
                 spawn = Material.EMERALD;
             } else {
                 return false;
             }
 
             if (purpurBlocks.get(args[1].toUpperCase()) == null) {
+                System.out.println("fail find" + " " + args[1].toUpperCase() + " " + purpurBlocks.get(args[1].toUpperCase()));
                 return false;
             }
 
             int[] local = purpurBlocks.get(args[1].toUpperCase());
 
-            targetWorld.dropItem(new Location(targetWorld, local[0], (local[1] + dropHeight), local[2]), new ItemStack(spawn));
+            List<Entity> nearbyEntites = (List<Entity>) new Location(targetWorld, local[0], (local[1] + (dropHeight / 2)), local[2]).getNearbyEntities(3, 3, 3);
+            if (nearbyEntites.size() == 0) {
+                targetWorld.dropItem(new Location(targetWorld, local[0], (local[1] + dropHeight), local[2]), new ItemStack(spawn));
+            } else {
+                int count = 0;
+                for (int i = 0; i < nearbyEntites.size(); i++) {
+                    if (nearbyEntites.get(i).getType().toString().equals("DROPPED_ITEM")) {
+                        Item temp = (Item) nearbyEntites.get(i);
+                        ItemStack tempStack = temp.getItemStack();
+                        if (tempStack.getType() == spawn) {
+                            count = count + tempStack.getAmount();
+                        }
+                    }
+                }
+                if (count < max) {
+                    targetWorld.dropItem(new Location(targetWorld, local[0], (local[1] + dropHeight), local[2]), new ItemStack(spawn));
+                }
+            }
 
             return true;
         }

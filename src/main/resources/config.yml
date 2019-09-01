@@ -13,3 +13,11 @@ shop:
     currencyName: "Iron Ingot"
     price: 4
     quantity: 16
+gensMax:
+  base:
+    iron: 128
+    gold: 40
+    emerald: 8
+  emerald:
+  diamond:
+
