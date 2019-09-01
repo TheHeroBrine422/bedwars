@@ -2,6 +2,8 @@
 
 A clone of Hypixel's "Bed Wars" game-mode.
 
+Colors are hard coded. The colors are lime, red, blue, yellow.
+
 ## Recommendations for new contributors
 
 - Java JDK 12 is recommended.
@@ -30,7 +32,7 @@ A clone of Hypixel's "Bed Wars" game-mode.
 - [ ] Team System
 - [ ] Bed Stuff
 - [ ] Classes
-    - [ ]
+    - [ ] Decide classes and features
 - [ ] Scoreboard
 
 
