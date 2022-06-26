@@ -1,6 +1,6 @@
 # bedwars
  
-### NOTICE: This project is no longer being worked on. I (Hero) started working on this project with some friends a few years ago and am now uploading it to my github just to have a backup.
+### NOTICE: This project is no longer being worked on. I (Hero) started working on this project with some friends a few years ago and am now uploading it to my github  to have a backup.
 
 # Original README.md
 
