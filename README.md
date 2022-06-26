@@ -1,9 +1,6 @@
 # bedwars
  
-### NOTICE: This project is no longer being worked on. I (Hero) started working on this project with some friends a few years ago and am now uploading it to my github to just have a backup. Some of the contributors to this project have github accounts so I am listing them below.
-
-https://github.com/Atlasted
-https://github.com/TheHeroBrine422
+### NOTICE: This project is no longer being worked on. I (Hero) started working on this project with some friends a few years ago and am now uploading it to my github to just have a backup.
 
 # Original README.md
 
